@@ -19,3 +19,4 @@
 - [x] Document environment variables and GitHub/Vercel handoff steps, then create a delivery checkpoint.
 - [ ] Push the final validated source to the requested private GitHub repository.
 - [ ] Connect the provided `atefshoes14-cmyk/atef-footwear-store` remote and push the release commit to `main`.
+- [ ] Verify the updated GitHub write access and push the prepared `main` commits.
