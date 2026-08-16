@@ -18,3 +18,4 @@
 - [x] Exercise create, update, archive, and delete against the managed database and S3, then remove the temporary verification product.
 - [x] Document environment variables and GitHub/Vercel handoff steps, then create a delivery checkpoint.
 - [ ] Push the final validated source to the requested private GitHub repository.
+- [ ] Connect the provided `atefshoes14-cmyk/atef-footwear-store` remote and push the release commit to `main`.
