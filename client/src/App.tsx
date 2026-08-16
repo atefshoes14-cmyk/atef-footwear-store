@@ -1,42 +1,25 @@
 import { Toaster } from "@/components/ui/sonner";
+import StoreHeader from "@/components/StoreHeader";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { CatalogProvider } from "@/contexts/CatalogContext";
+import { InquiryProvider } from "@/contexts/InquiryContext";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import AdminDashboard from "@/pages/AdminDashboard";
+import Home from "@/pages/Home";
+import ProductDetails from "@/pages/ProductDetails";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
-  );
+  return <Switch><Route path="/" component={Home} /><Route path="/products/:id" component={ProductDetails} /><Route path="/admin" component={AdminDashboard} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch>;
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
-function App() {
-  return (
-    <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+function Application() {
+  const [location] = useLocation();
+  return <CatalogProvider><InquiryProvider>{!location.startsWith("/admin") && <StoreHeader />}<Router /></InquiryProvider></CatalogProvider>;
 }
 
-export default App;
+export default function App() {
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster /><Application /></TooltipProvider></ThemeProvider></ErrorBoundary>;
+}

@@ -1,0 +1,20 @@
+# Project TODO
+
+- [x] Establish the Arabic RTL design system, global font, and responsive application shell.
+- [x] Add a Drizzle `products` table with inventory, option, availability, and image reference fields.
+- [x] Generate and apply the products database migration through the managed database workflow.
+- [x] Implement public product listing and detail procedures with live filtering support.
+- [x] Implement admin-only product creation, update, archive, delete, and image-upload procedures.
+- [x] Add typed server-side product filtering for keyword, category, size, color, and price range.
+- [x] Return explicit not-found errors for invalid admin update, archive, and delete requests.
+- [x] Build the mobile-first Atef / عاطف storefront header, search, category navigation, filters, product grid, and inquiry drawer.
+- [x] Build the product detail gallery, option selectors, and dynamic WhatsApp inquiry link.
+- [x] Extend products and the admin interface to support multiple uploaded product images for a genuine selectable gallery.
+- [x] Build a Manus OAuth-protected admin dashboard using the provided dashboard layout and role checks.
+- [x] Connect dashboard product CRUD forms, stock controls, availability toggle, and S3 image uploads.
+- [x] Add unit coverage for filtering, authorization, and WhatsApp-link construction.
+- [x] Validate desktop and mobile rendering, type safety, server behavior, and database interaction.
+- [x] Visually validate product detail gallery, selectors, and WhatsApp CTA on desktop and mobile using a temporary product.
+- [x] Exercise create, update, archive, and delete against the managed database and S3, then remove the temporary verification product.
+- [x] Document environment variables and GitHub/Vercel handoff steps, then create a delivery checkpoint.
+- [ ] Push the final validated source to the requested private GitHub repository.
