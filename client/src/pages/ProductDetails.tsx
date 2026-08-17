@@ -1,45 +1,32 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useInquiry } from "@/contexts/InquiryContext";
-import { trpc } from "@/lib/trpc";
 import { createWhatsAppOrderLink } from "@/lib/whatsapp";
+import { trpc } from "@/lib/trpc";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check, MessageCircle, PackageOpen, Plus } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, Minus, Plus, ShoppingBag, Tag, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useRoute } from "wouter";
+import { Link, useLocation, useRoute } from "wouter";
 
-const whatsappNumber = import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string | undefined;
+const categoryLabels: Record<string, string> = { men: "الأحذية الرجالي", women: "الأحذية الحريمي", kids: "أحذية الأطفال", bags: "الشنط والحقائب", offers: "العروض والخصومات" };
+const whatsappNumber = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string | undefined) || "201007891081";
 
 export default function ProductDetails() {
   const [, params] = useRoute("/products/:id");
-  const productId = params?.id ?? "";
-  const productQuery = trpc.products.byId.useQuery({ id: productId }, { enabled: Boolean(productId) });
-  const product = productQuery.data;
-  const [size, setSize] = useState<number>();
-  const [color, setColor] = useState<string>();
-  const [activeImage, setActiveImage] = useState<string>();
+  const [, navigate] = useLocation();
   const { addItem } = useInquiry();
-  const gallery = product?.imageUrls.length ? product.imageUrls : product ? [product.imageUrl] : [];
-  useEffect(() => { if (product) { setSize(product.sizes[0]); setColor(product.colors[0]); setActiveImage(gallery[0]); } }, [product]);
-
-  if (productQuery.isLoading) return <main className="page-state">جاري تحميل المنتج...</main>;
-  if (!product) return <main className="page-state"><PackageOpen size={38} /><h1>المنتج غير متاح</h1><Link href="/">العودة للتسوق</Link></main>;
+  const productQuery = trpc.products.byId.useQuery({ id: params?.id ?? "" }, { enabled: Boolean(params?.id) });
+  const product = productQuery.data;
+  const [size, setSize] = useState<number | "N/A">();
+  const [color, setColor] = useState<string>();
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState<string>();
+  const gallery = product?.imageUrls?.length ? product.imageUrls : product ? [product.imageUrl] : [];
+  useEffect(() => { if (product) { setSize(product.sizes[0] ?? "N/A"); setColor(product.colors[0]); setActiveImage(gallery[0]); } }, [product, gallery.length]);
+  if (productQuery.isLoading) return <main className="detail-state">جاري تحميل المنتج...</main>;
+  if (productQuery.isError || !product) return <main className="detail-state error">لم نتمكن من العثور على هذا المنتج.</main>;
+  const displayPrice = product.salePrice ?? product.price;
   const inStock = product.stockQuantity > 0;
-  const orderLink = createWhatsAppOrderLink({ phone: whatsappNumber, productTitle: product.title, size: size ?? "غير محدد", color: color ?? "غير محدد" });
-  const addToInquiry = () => addItem({ id: product.id, title: product.title, price: product.price, imageUrl: product.imageUrl, size, color });
-
-  return <main className="container product-page">
-    <Link href="/" className="back-link"><ArrowRight size={17} /> العودة إلى المجموعة</Link>
-    <div className="product-detail-grid">
-      <div className="detail-gallery"><div className="detail-image"><img src={activeImage ?? gallery[0]} alt={product.title} /><span className="image-caption">Atef / عاطف</span></div><div className="gallery-thumbnails">{gallery.map((image, index) => <button key={image} className={cn(activeImage === image && "active")} aria-label={`عرض الصورة ${index + 1} من ${product.title}`} onClick={() => setActiveImage(image)}><img src={image} alt="" /></button>)}</div></div>
-      <section className="detail-info">
-        <div className="detail-title-row"><Badge className={inStock ? "stock-badge in-stock" : "stock-badge out-stock"}>{inStock ? "متوفر الآن" : "نفدت الكمية"}</Badge><span>{product.category === "men" ? "رجالي" : product.category === "women" ? "نسائي" : product.category === "kids" ? "أطفال" : "عرض مميز"}</span></div>
-        <h1>{product.title}</h1><b className="detail-price">{product.price.toLocaleString("ar-EG")} <small>ج.م</small></b>
-        <div className="selector"><div><b>اختر المقاس</b><span>{size ? `${size} EU` : ""}</span></div><div className="size-options">{product.sizes.map(value => <button key={value} onClick={() => setSize(value)} className={cn(size === value && "selected")}>{value}{size === value && <Check size={13} />}</button>)}</div></div>
-        <div className="selector"><div><b>اختر اللون</b><span>{color}</span></div><div className="color-options">{product.colors.map(value => <button key={value} onClick={() => setColor(value)} className={cn(color === value && "selected")}><i className={`swatch swatch-${value}`} />{value}</button>)}</div></div>
-        <div className="product-actions"><Button variant="outline" disabled={!inStock} onClick={addToInquiry}><Plus size={18} /> أضف للاستفسار</Button><a className={cn("whatsapp-button", !inStock && "disabled")} href={inStock ? orderLink : undefined} target="_blank" rel="noreferrer"><MessageCircle size={19} /> اطلب عبر واتساب</a></div>
-        <p className="detail-note">سيتم تضمين اسم الحذاء والمقاس واللون المختار في رسالة واتساب تلقائياً.</p>
-      </section>
-    </div>
-  </main>;
+  const addToCart = () => { addItem({ id: product.id, title: product.title, price: displayPrice, imageUrl: product.imageUrl, size, color }, quantity); };
+  const whatsappLink = createWhatsAppOrderLink({ phone: whatsappNumber, productTitle: product.title, size: size ?? "N/A", color: color ?? "غير محدد" });
+  return <main className="product-detail-page"><div className="container detail-breadcrumb"><Link href="/">الرئيسية</Link><ChevronRight size={14} /><span>{categoryLabels[product.category] ?? "المنتجات"}</span><ChevronRight size={14} /><b>{product.title}</b></div><div className="container detail-layout"><div className="detail-gallery"><div className="detail-image"><img src={activeImage ?? gallery[0]} alt={product.title} /><span className="image-caption">ATEF SHOES · 1969</span></div><div className="gallery-thumbnails">{gallery.map((image, index) => <button key={`${image}-${index}`} className={cn(activeImage === image && "active")} aria-label={`عرض الصورة ${index + 1}`} onClick={() => setActiveImage(image)}><img src={image} alt="" /></button>)}</div></div><div className="detail-copy"><span className="detail-category">{categoryLabels[product.category]}</span><div className="detail-stock">{inStock ? <><i /> متوفر في المخزون</> : "نفدت الكمية حالياً"}</div><h1>{product.title}</h1><div className="detail-price"><b>{displayPrice.toLocaleString("ar-EG")} <small>ج.م</small></b>{product.salePrice && <><del>{product.price.toLocaleString("ar-EG")} ج.م</del><span><Tag size={13} /> عرض خاص</span></>}</div><p className="detail-description">اختيار أنيق من عاطف للأحذية، مصمم ليمنحك راحة تدوم وأناقة تليق بكل مشوار.</p>{product.sizes.length > 0 && <div className="selector-block"><div className="selector-heading"><b>اختاري المقاس</b><span>{product.category === "bags" ? "هذا المنتج لا يحتاج مقاساً" : "مقاس مصري"}</span></div><div className="selector-options">{product.sizes.map(item => <button key={String(item)} className={cn(size === item && "selected")} onClick={() => setSize(item)}>{item === "N/A" ? "بدون مقاس" : item}{size === item && <Check size={13} />}</button>)}</div></div>}<div className="selector-block"><div className="selector-heading"><b>اختاري اللون</b><span>{color}</span></div><div className="color-options">{product.colors.map(item => <button key={item} className={cn(color === item && "selected")} onClick={() => setColor(item)}><i className={`swatch swatch-${item}`} />{item}</button>)}</div></div><div className="detail-benefits"><span><Truck size={17} /> توصيل لجميع المحافظات</span><span><Check size={17} /> الدفع عند الاستلام</span></div><div className="detail-actions"><div className="quantity-control large"><button onClick={() => setQuantity(current => Math.max(1, current - 1))}><Minus size={15} /></button><b>{quantity}</b><button onClick={() => setQuantity(current => Math.min(product.stockQuantity || 1, current + 1))}><Plus size={15} /></button></div><Button className="add-cart-button" disabled={!inStock} onClick={addToCart}><ShoppingBag size={18} /> أضف إلى السلة</Button></div><a className="whatsapp-button detail-whatsapp" href={whatsappLink} target="_blank" rel="noreferrer"><span>اطلب مباشرة عبر واتساب</span><ArrowRight size={18} /></a><button className="back-link" onClick={() => navigate("/")}>العودة للتسوق</button></div></div></main>;
 }

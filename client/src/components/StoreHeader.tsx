@@ -5,77 +5,48 @@ import { useCatalog } from "@/contexts/CatalogContext";
 import { useInquiry } from "@/contexts/InquiryContext";
 import { createWhatsAppOrderLink } from "@/lib/whatsapp";
 import { Link } from "wouter";
-import { ArrowLeft, Minus, Search, ShoppingBag, Trash2 } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Search, ShoppingBag, Trash2 } from "lucide-react";
 
 const navigation = [
-  { id: undefined, label: "الكل" },
-  { id: "men" as const, label: "رجالي" },
-  { id: "women" as const, label: "نسائي" },
-  { id: "kids" as const, label: "أطفال" },
-  { id: "offers" as const, label: "العروض" },
+  { id: undefined, label: "الرئيسية" },
+  { id: "men" as const, label: "الأحذية الرجالي" },
+  { id: "women" as const, label: "الأحذية الحريمي" },
+  { id: "kids" as const, label: "أحذية الأطفال" },
+  { id: "bags" as const, label: "الشنط والحقائب" },
+  { id: "offers" as const, label: "العروض والخصومات" },
 ];
 
-const whatsappNumber = import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string | undefined;
+const whatsappNumber = (import.meta.env.VITE_STORE_WHATSAPP_NUMBER as string | undefined) || "201007891081";
 
 export default function StoreHeader() {
   const { search, setSearch, category, setCategory } = useCatalog();
-  const { items, removeItem, clear } = useInquiry();
-  const inquiryLink = items.length
-    ? createWhatsAppOrderLink({
-        phone: whatsappNumber,
-        productTitle: items.map(item => item.title).join("، "),
-        size: items.map(item => item.size ?? "غير محدد").join("، "),
-        color: items.map(item => item.color ?? "غير محدد").join("، "),
-      })
-    : "#";
+  const { items, count, total, removeItem, updateQuantity, clear } = useInquiry();
+  const inquiryLink = items.length ? createWhatsAppOrderLink({ phone: whatsappNumber, productTitle: items.map(item => `${item.title} × ${item.quantity}`).join("، "), size: items.map(item => item.size ?? "N/A").join("، "), color: items.map(item => item.color ?? "غير محدد").join("، ") }) : "#";
 
   return (
     <header className="store-header">
+      <div className="top-announcement">عاطف للأحذية <span>•</span> خبرة وثقة منذ عام 1969 <span>•</span> شحن لجميع المحافظات</div>
       <div className="container header-top">
-        <Link href="/" className="brand" aria-label="العودة للرئيسية">
+        <Link href="/" className="brand" aria-label="عاطف للأحذية - ATEF SHOES">
           <span className="brand-mark">ع</span>
-          <span><b>Atef</b><small>عاطف للأحذية</small></span>
+          <span><b>ATEF SHOES</b><small>عاطف للأحذية <i>منذ عام 1969</i></small></span>
         </Link>
-        <div className="header-search">
-          <Search size={18} />
-          <Input value={search} onChange={event => setSearch(event.target.value)} placeholder="ابحث عن حذاءك القادم" aria-label="ابحث في الأحذية" />
-        </div>
+        <div className="header-search"><Search size={18} /><Input value={search} onChange={event => setSearch(event.target.value)} placeholder="ابحث عن حذاءك أو حقيبتك" aria-label="ابحث في منتجات عاطف" /></div>
         <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" className="inquiry-trigger" aria-label="فتح سلة الاستفسار">
-              <ShoppingBag size={19} />
-              <span className="hidden sm:inline">استفساراتي</span>
-              {items.length > 0 && <em>{items.length}</em>}
-            </Button>
-          </SheetTrigger>
+          <SheetTrigger asChild><Button variant="outline" className="cart-trigger" aria-label="فتح سلة المشتريات"><ShoppingBag size={19} /><span className="cart-trigger-label">سلة المشتريات</span>{count > 0 && <em>{count}</em>}</Button></SheetTrigger>
           <SheetContent side="left" className="inquiry-sheet" dir="rtl">
-            <SheetHeader>
-              <SheetTitle className="text-right">سلة الاستفسار</SheetTitle>
-            </SheetHeader>
-            {items.length === 0 ? (
-              <div className="empty-inquiry"><ShoppingBag size={30} /><p>لم تضف أي حذاء بعد.</p><span>أضف ما يعجبك وسنجهّز لك رسالة واتساب جاهزة.</span></div>
-            ) : (
-              <div className="inquiry-list">
-                {items.map(item => (
-                  <article key={item.id} className="inquiry-item">
-                    <img src={item.imageUrl} alt="" />
-                    <div><b>{item.title}</b><span>{item.price.toLocaleString("ar-EG")} ج.م</span></div>
-                    <button aria-label={`حذف ${item.title}`} onClick={() => removeItem(item.id)}><Trash2 size={17} /></button>
-                  </article>
-                ))}
-                <a className="whatsapp-button" href={inquiryLink} target="_blank" rel="noreferrer"><span>إرسال الاستفسار عبر واتساب</span><ArrowLeft size={18} /></a>
-                <button className="clear-inquiry" onClick={clear}><Minus size={15} /> إفراغ السلة</button>
-              </div>
-            )}
+            <SheetHeader><SheetTitle className="text-right">سلة المشتريات</SheetTitle></SheetHeader>
+            {items.length === 0 ? <div className="empty-inquiry"><ShoppingBag size={30} /><p>سلتك فارغة</p><span>اختاري ما يناسبك من تشكيلة عاطف وابدئي التسوق.</span></div> : <div className="inquiry-list">
+              {items.map(item => <article key={`${item.id}-${item.size}-${item.color}`} className="inquiry-item"><img src={item.imageUrl} alt="" /><div className="cart-item-info"><b>{item.title}</b><span>{item.size && item.size !== "N/A" ? `مقاس ${item.size}` : "بدون مقاس"} · {item.color}</span><strong>{item.price.toLocaleString("ar-EG")} ج.م</strong><div className="quantity-control"><button onClick={() => updateQuantity(item.id, item.quantity - 1, item.size, item.color)} aria-label="تقليل الكمية"><Minus size={13} /></button><b>{item.quantity}</b><button onClick={() => updateQuantity(item.id, item.quantity + 1, item.size, item.color)} aria-label="زيادة الكمية"><Plus size={13} /></button></div></div><button className="remove-cart-item" aria-label={`حذف ${item.title}`} onClick={() => removeItem(item.id, item.size, item.color)}><Trash2 size={16} /></button></article>)}
+              <div className="cart-total"><span>الإجمالي</span><b>{total.toLocaleString("ar-EG")} ج.م</b></div>
+              <Link className="checkout-link" href="/checkout"><span>إتمام الطلب والدفع عند الاستلام</span><ArrowLeft size={18} /></Link>
+              <a className="whatsapp-button secondary-whatsapp" href={inquiryLink} target="_blank" rel="noreferrer"><span>استفسار سريع عبر واتساب</span><ArrowLeft size={18} /></a>
+              <button className="clear-inquiry" onClick={clear}><Minus size={15} /> إفراغ السلة</button>
+            </div>}
           </SheetContent>
         </Sheet>
       </div>
-      <nav className="category-nav" aria-label="فئات المنتجات">
-        <div className="container category-scroll">
-          {navigation.map(item => <button key={item.label} className={category === item.id ? "active" : ""} onClick={() => setCategory(item.id)}>{item.label}</button>)}
-          <Link href="/admin" className="admin-link">إدارة المخزون</Link>
-        </div>
-      </nav>
+      <nav className="category-nav" aria-label="فئات المنتجات"><div className="container category-scroll">{navigation.map(item => <button key={item.label} className={category === item.id ? "active" : ""} onClick={() => setCategory(item.id)}>{item.label}</button>)}</div></nav>
     </header>
   );
 }

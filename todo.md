@@ -20,3 +20,24 @@
 - [x] Push the final validated source to the requested private GitHub repository.
 - [x] Connect the provided `atefshoes14-cmyk/atef-footwear-store` remote and push the release commit to `main`.
 - [x] Verify the updated GitHub write access and push the prepared `main` commits.
+
+## Atef Shoes rebuild
+
+- [x] Replace the visual system with the exact Atef Shoes burgundy, cream, gold, and bilingual 1969 brand identity.
+- [x] Update storefront navigation and catalog taxonomy for men, women, kids, bags, and offers.
+- [x] Add sale pricing, stock-state filtering, and size 36–45 or N/A catalog controls.
+- [x] Implement the multi-item cart drawer with size/color selections, quantity controls, and totals.
+- [x] Implement cash-on-delivery customer checkout with name, phone, and detailed delivery address.
+- [x] Persist customer orders with Pending status and reduce product inventory transactionally.
+- [x] Add protected order management with status controls for Pending, Shipped, Delivered, and Cancelled.
+- [x] Extend protected product CRUD for sale price, bags/N/A sizes, image URL/upload, and stock status.
+- [x] Seed six realistic Atef launch products and verify they render from the database.
+- [x] Add tests and complete responsive, checkout, WhatsApp, admin, and order-flow validation.
+- [ ] Save a new rebuilt checkpoint and push the updated source to GitHub.
+
+- [x] Add credential-backed username/password login for `/admin` in addition to server-side admin role enforcement.
+- [x] Fix password-authenticated admin logout so the custom session cookie is always cleared.
+- [x] Add a Vitest lifecycle test for admin login, access, logout, and revoked access.
+- [x] Add a manual image URL field to the protected product form and preserve it through CRUD validation.
+- [x] Extend the admin auth lifecycle test to assert access is denied after the cleared session cookie.
+- [x] Exercise authenticated admin product/order UI and browser checkout/status flows, then record the validation.

@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
-export type CatalogCategory = "men" | "women" | "kids" | "offers" | undefined;
+export type CatalogCategory = "men" | "women" | "kids" | "bags" | "offers" | undefined;
 
 type CatalogContextValue = {
   search: string;
@@ -15,10 +15,7 @@ const CatalogContext = createContext<CatalogContextValue | null>(null);
 export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CatalogCategory>();
-  const value = useMemo(
-    () => ({ search, setSearch, category, setCategory, resetCatalog: () => { setSearch(""); setCategory(undefined); } }),
-    [search, category],
-  );
+  const value = useMemo(() => ({ search, setSearch, category, setCategory, resetCatalog: () => { setSearch(""); setCategory(undefined); } }), [search, category]);
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>;
 }
 

@@ -1,0 +1,16 @@
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import DashboardLayout from "@/components/DashboardLayout";
+import { trpc } from "@/lib/trpc";
+import { ChevronDown, Loader2, MapPin, PackageCheck, Phone, UserRound } from "lucide-react";
+import { toast } from "sonner";
+
+const statuses = ["Pending", "Shipped", "Delivered", "Cancelled"] as const;
+const statusLabel: Record<(typeof statuses)[number], string> = { Pending: "قيد الانتظار", Shipped: "تم الشحن", Delivered: "تم التسليم", Cancelled: "ملغي" };
+
+export default function AdminOrders() {
+  const utils = trpc.useUtils();
+  const ordersQuery = trpc.products.orders.useQuery();
+  const updateStatus = trpc.products.updateOrderStatus.useMutation({ onSuccess: () => { toast.success("تم تحديث حالة الطلب."); utils.products.orders.invalidate(); } });
+  return <DashboardLayout><div className="orders-page" dir="rtl"><div className="inventory-heading"><div><span className="eyebrow">ATEF SHOES · خدمة العملاء</span><h1>طلبات العملاء</h1><p>راجعي الطلبات الواردة وتابعي حالتها حتى التسليم.</p></div><div className="orders-total"><PackageCheck size={19} /> {ordersQuery.data?.length ?? 0} طلب</div></div>{ordersQuery.isLoading ? <div className="admin-list-state"><Loader2 className="animate-spin" /> جاري تحميل الطلبات...</div> : ordersQuery.isError ? <div className="admin-list-state">تعذر تحميل الطلبات.</div> : ordersQuery.data?.length ? <div className="orders-list">{ordersQuery.data.map(order => <article className="order-card" key={order.id}><div className="order-card-head"><div><span className="order-number">طلب #{order.id}</span><time>{new Date(order.createdAt).toLocaleString("ar-EG")}</time></div><Select value={order.status} onValueChange={value => updateStatus.mutate({ id: order.id, status: value as (typeof statuses)[number] })}><SelectTrigger className={`order-status status-${order.status.toLowerCase()}`}><SelectValue /></SelectTrigger><SelectContent>{statuses.map(status => <SelectItem key={status} value={status}>{statusLabel[status]}</SelectItem>)}</SelectContent></Select></div><div className="order-customer"><span><UserRound size={14} /> {order.customerName}</span><a href={`tel:${order.phone}`}><Phone size={14} /> {order.phone}</a><span><MapPin size={14} /> {order.address}</span></div><div className="order-items">{order.items.map((item, index) => <div className="order-line" key={`${item.productId}-${index}`}><img src={item.imageUrl} alt="" /><div><b>{item.title}</b><span>{item.size && item.size !== "N/A" ? `مقاس ${item.size}` : "بدون مقاس"} · {item.color} · {item.quantity} قطعة</span></div><strong>{(item.unitPrice * item.quantity).toLocaleString("ar-EG")} ج.م</strong></div>)}</div><div className="order-card-foot"><span>الدفع عند الاستلام</span><b>{order.totalAmount.toLocaleString("ar-EG")} ج.م</b><Badge className={`status-badge status-${order.status.toLowerCase()}`}>{statusLabel[order.status as (typeof statuses)[number]] ?? order.status}</Badge></div></article>)}</div> : <div className="admin-list-state"><PackageCheck size={30} /><b>لا توجد طلبات بعد</b><span>ستظهر طلبات العملاء هنا بعد تأكيد الشراء من المتجر.</span><ChevronDown size={18} /></div>}</div></DashboardLayout>;
+}
