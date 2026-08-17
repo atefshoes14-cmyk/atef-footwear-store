@@ -33,7 +33,7 @@
 - [x] Extend protected product CRUD for sale price, bags/N/A sizes, image URL/upload, and stock status.
 - [x] Seed six realistic Atef launch products and verify they render from the database.
 - [x] Add tests and complete responsive, checkout, WhatsApp, admin, and order-flow validation.
-- [ ] Save a new rebuilt checkpoint and push the updated source to GitHub.
+- [x] Save a new rebuilt checkpoint and push the updated source to GitHub.
 
 - [x] Add credential-backed username/password login for `/admin` in addition to server-side admin role enforcement.
 - [x] Fix password-authenticated admin logout so the custom session cookie is always cleared.
