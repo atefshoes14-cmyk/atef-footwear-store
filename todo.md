@@ -41,3 +41,10 @@
 - [x] Add a manual image URL field to the protected product form and preserve it through CRUD validation.
 - [x] Extend the admin auth lifecycle test to assert access is denied after the cleared session cookie.
 - [x] Exercise authenticated admin product/order UI and browser checkout/status flows, then record the validation.
+
+## Storefront header and catalog refinement
+
+- [x] Remove the public storefront filter sidebar and expand the product grid across the full container.
+- [x] Upload and reference the supplied Atef banner and official square logo through managed project asset URLs.
+- [x] Replace the public header’s temporary mark with the supplied official logo and banner-led brand treatment.
+- [x] Validate the revised desktop and mobile storefront, then save and push the refined delivery checkpoint.

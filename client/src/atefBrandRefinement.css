@@ -1,0 +1,74 @@
+/* Official supplied assets and storefront-only catalog refinement. */
+.brand-logo-image {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid #e7d8ca;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f8f1e7;
+}
+
+.brand-copy b {
+  display: block;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.1px;
+  line-height: 1;
+}
+
+.brand-copy small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.brand-copy small i {
+  margin-right: 4px;
+  color: var(--gold);
+  font-style: normal;
+}
+
+.official-brand-banner {
+  overflow: hidden;
+  background: #e5d8c8;
+  border-bottom: 1px solid #e6d0bd;
+}
+
+.official-brand-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 537 / 302;
+  object-fit: contain;
+  background: #e5d8c8;
+}
+
+.catalog-layout.catalog-fullwidth {
+  display: block;
+}
+
+.catalog-fullwidth .product-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 780px) {
+  .brand-copy small {
+    display: none;
+  }
+
+  .brand-logo-image {
+    width: 35px;
+    height: 35px;
+  }
+
+  .brand-copy b {
+    font-size: 0.78rem;
+  }
+
+  .catalog-fullwidth .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

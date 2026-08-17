@@ -1,0 +1,3 @@
+# Supplied Atef Brand Assets — Verification Notes
+
+The official wide banner is **4296 × 2416** at a 1.778:1 landscape ratio. Its ordered tiles confirm a warm beige studio background, burgundy Atef brand treatment, the paired men’s shoe and heel logo motif with **ATEF SHOES**, sculptural footwear imagery, and the contact number **01007891081**. The central Arabic brand treatment reads **عاطف للأحذية**, and the right-side mark reads **منذ عام 1969**. The central wordmark continues across tile boundaries, so the banner should be used as one un-cropped full-width image rather than reconstructed from individual tiles.

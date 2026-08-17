@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useCatalog } from "@/contexts/CatalogContext";
 import { useInquiry } from "@/contexts/InquiryContext";
+import { brandAssets } from "@/lib/brandAssets";
 import { createWhatsAppOrderLink } from "@/lib/whatsapp";
 import { Link } from "wouter";
 import { ArrowLeft, Minus, Plus, Search, ShoppingBag, Trash2 } from "lucide-react";
@@ -25,11 +26,11 @@ export default function StoreHeader() {
 
   return (
     <header className="store-header">
-      <div className="top-announcement">عاطف للأحذية <span>•</span> خبرة وثقة منذ عام 1969 <span>•</span> شحن لجميع المحافظات</div>
+      <div className="top-announcement">عاطف للأحذية <span>•</span> منذ عام 1969 <span>•</span> 01007891081</div>
       <div className="container header-top">
         <Link href="/" className="brand" aria-label="عاطف للأحذية - ATEF SHOES">
-          <span className="brand-mark">ع</span>
-          <span><b>ATEF SHOES</b><small>عاطف للأحذية <i>منذ عام 1969</i></small></span>
+          <img className="brand-logo-image" src={brandAssets.officialLogo} alt="شعار عاطف للأحذية" />
+          <span className="brand-copy"><b>عاطف للأحذية</b><small>ATEF SHOES <i>منذ عام 1969</i></small></span>
         </Link>
         <div className="header-search"><Search size={18} /><Input value={search} onChange={event => setSearch(event.target.value)} placeholder="ابحث عن حذاءك أو حقيبتك" aria-label="ابحث في منتجات عاطف" /></div>
         <Sheet>
