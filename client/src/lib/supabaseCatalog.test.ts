@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { toStoreProduct } from "./supabaseCatalog";
+import { isCatalogProductId, toStoreProduct } from "./supabaseCatalog";
 
 describe("toStoreProduct", () => {
   it("maps Supabase images and variants to a purchasable public catalog product", () => {
@@ -25,5 +25,12 @@ describe("toStoreProduct", () => {
     });
     expect(result.sizes).toEqual(["41", "42"]);
     expect(result.colors).toEqual(["أسود", "بني"]);
+  });
+});
+
+describe("isCatalogProductId", () => {
+  it("rejects direct routes that cannot be valid Supabase product identifiers", () => {
+    expect(isCatalogProductId("not-a-product")).toBe(false);
+    expect(isCatalogProductId("29544a3e-a46f-4753-b94f-b421f842e4f2")).toBe(true);
   });
 });

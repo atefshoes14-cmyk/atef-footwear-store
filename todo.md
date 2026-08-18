@@ -88,3 +88,4 @@
 - [ ] Re-verify the updated Arabic copy on the live Vercel routes for home, product details, product error, checkout, and order tracking.
 - [ ] Verify public checkout empty/error and product loading/not-found states after the language update.
 - [ ] Complete a final live Vercel customer-flow audit from browse through order tracking after the production deployment.
+- [x] Fix the direct invalid product route so its loading state resolves to the public not-found message.

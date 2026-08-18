@@ -7,6 +7,11 @@ export type SupabaseCatalogProduct = { id: string; title: string; description: s
 export type StoreProduct = { id: string; title: string; price: number; salePrice: number | null; imageUrl: string; stockQuantity: number; sizes: Array<string | "N/A">; colors: string[]; defaultVariantId?: string };
 
 const placeholder = "https://placehold.co/800x800/f5ede2/6b1d2f?text=ATEF+SHOES";
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function isCatalogProductId(value: string) {
+  return uuidPattern.test(value);
+}
 
 export function toStoreProduct(product: SupabaseCatalogProduct): StoreProduct {
   const variants = product.product_variants ?? [];
@@ -25,6 +30,7 @@ export async function fetchCatalog(search?: string, category?: string | null) {
 }
 
 export async function fetchCatalogProduct(id: string) {
+  if (!isCatalogProductId(id)) return null;
   const { data, error } = await supabase.from("products").select("id,title,description,category,price,sale_price,product_variants(id,size,color,stock_quantity),product_images(id,public_url,sort_order)").eq("id", id).eq("is_active", true).maybeSingle();
   if (error) throw error;
   return data as SupabaseCatalogProduct | null;
