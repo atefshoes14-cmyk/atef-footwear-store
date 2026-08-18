@@ -70,4 +70,4 @@
 - [x] Diagnose the Vercel blank screen and add a production configuration notice that replaces the startup crash.
 - [x] Add the Supabase Vite variables to Vercel, redeploy the latest GitHub revision, and verify the storefront loads six Supabase products in production.
 - [x] Configure and locally validate Vercel SPA fallback so direct `/admin` and `/admin/orders` requests load the protected React routes instead of 404.
-- [ ] Push the Vercel rewrite and verify the live `/admin` route after the production redeploy.
+- [x] Push the Vercel rewrite and verify the live `/admin` route after the production redeploy.
