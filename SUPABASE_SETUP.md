@@ -10,6 +10,7 @@ The following repository files are the source of truth for the current Supabase 
 | --- | --- |
 | `supabase/migrations/20260818_atef_admin_schema.sql` | Tables, product variants, images, orders, order line items, RLS rules, `product-images` bucket, and the atomic `place_order` function. |
 | `supabase/migrations/20260818_harden_function_exposure.sql` | Moves authorization helpers into a private schema and limits their public exposure. |
+| `supabase/migrations/20260818_customer_order_tracking.sql` | Adds the public `track_orders_by_phone` RPC used by `/orders`; it returns only order ID, status, total, date, and item summaries. |
 | `supabase/seed.sql` | The six launch products, twelve inventory variants, and catalog image metadata. |
 
 ## Production environment variables
@@ -64,4 +65,4 @@ Anonymous REST write checks were denied for `products` and `orders` (HTTP `401`)
 
 ### Supabase security advisor note
 
-The latest advisor report contains two warnings for the public `place_order` `SECURITY DEFINER` function. This exposure is **intentional** because the store supports guest cash-on-delivery checkout; the function validates cart contents, locks and decrements stock atomically, and uses a fixed search path. Revoking anonymous execution would disable guest checkout. The other remaining warning is that leaked-password protection is disabled in Supabase Auth; enable it in the Supabase Auth password-security settings when convenient. See the relevant [Supabase linter guidance](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable) and [password-protection guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
+The latest advisor report contains warnings for the public `place_order` and `track_orders_by_phone` `SECURITY DEFINER` functions. These exposures are **intentional**: guest checkout needs `place_order`, and the requested guest tracking page needs a phone lookup. The tracking RPC validates a practical phone length and intentionally returns no name, phone, address, or customer profile—only the status, date, total, and ordered-item summaries. Revoking anonymous execution would disable the corresponding customer feature. The other remaining warning is that leaked-password protection is disabled in Supabase Auth; enable it in the Supabase Auth password-security settings when convenient. See the relevant [Supabase linter guidance](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable) and [password-protection guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).

@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import StoreHeader from "@/components/StoreHeader";
+import StoreFooter from "@/components/StoreFooter";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CatalogProvider } from "@/contexts/CatalogContext";
 import { InquiryProvider } from "@/contexts/InquiryContext";
@@ -9,18 +10,20 @@ import Checkout from "@/pages/Checkout";
 import Home from "@/pages/Home";
 import NotFound from "@/pages/NotFound";
 import ProductDetails from "@/pages/ProductDetails";
+import MyOrders from "@/pages/MyOrders";
 import { supabaseConfigMissing } from "@/lib/supabase";
 import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function Router() {
-  return <Switch><Route path="/" component={Home} /><Route path="/products/:id" component={ProductDetails} /><Route path="/checkout" component={Checkout} /><Route path="/admin" component={AdminDashboard} /><Route path="/admin/orders" component={AdminOrders} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch>;
+  return <Switch><Route path="/" component={Home} /><Route path="/products/:id" component={ProductDetails} /><Route path="/checkout" component={Checkout} /><Route path="/orders" component={MyOrders} /><Route path="/admin" component={AdminDashboard} /><Route path="/admin/orders" component={AdminOrders} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch>;
 }
 
 function Application() {
   const [location] = useLocation();
-  return <CatalogProvider><InquiryProvider>{!location.startsWith("/admin") && <StoreHeader />}<Router /></InquiryProvider></CatalogProvider>;
+  const publicRoute = !location.startsWith("/admin");
+  return <CatalogProvider><InquiryProvider>{publicRoute && <StoreHeader />}<Router />{publicRoute && <StoreFooter />}</InquiryProvider></CatalogProvider>;
 }
 
 function SupabaseConfigurationNotice() {

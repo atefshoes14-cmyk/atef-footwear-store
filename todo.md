@@ -71,3 +71,12 @@
 - [x] Add the Supabase Vite variables to Vercel, redeploy the latest GitHub revision, and verify the storefront loads six Supabase products in production.
 - [x] Configure and locally validate Vercel SPA fallback so direct `/admin` and `/admin/orders` requests load the protected React routes instead of 404.
 - [x] Push the Vercel rewrite and verify the live `/admin` route after the production redeploy.
+- [x] Repair the public header logo asset and refine the responsive RTL header presentation.
+- [x] Close the cart drawer automatically when customers proceed to checkout.
+- [x] Add a phone-number-based customer order-tracking page at `/orders` with order status, items, total, and date.
+- [x] Apply solid, readable backgrounds and correct stacking to drawers, dialogs, selects, and dropdown menus.
+- [x] Repair the public header logo asset and refine the responsive RTL header presentation.
+- [x] Close the cart drawer automatically when customers proceed to checkout.
+- [x] Add a phone-number-based customer order-tracking page at `/orders` with order status, items, total, and date.
+- [x] Apply solid, readable backgrounds and correct stacking to drawers, dialogs, selects, and dropdown menus.
+- [x] Add a subtle `/admin` link to the public footer and retain the Vercel SPA rewrite configuration.
