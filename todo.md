@@ -80,12 +80,13 @@
 - [x] Add a phone-number-based customer order-tracking page at `/orders` with order status, items, total, and date.
 - [x] Apply solid, readable backgrounds and correct stacking to drawers, dialogs, selects, and dropdown menus.
 - [x] Add a subtle `/admin` link to the public footer and retain the Vercel SPA rewrite configuration.
-- [ ] Confirm the latest GitHub revision is deployed by Vercel and preserve the SPA rewrite for direct client-side routes.
+- [x] Confirm the latest GitHub revision is deployed by Vercel and preserve the SPA rewrite for direct client-side routes.
 - [x] Remove the public footer link to the admin dashboard while retaining protected `/admin` access by direct URL.
 - [x] Replace feminine customer-facing Arabic phrasing with masculine/general Arabic across storefront, checkout, tracking, and notifications.
 - [x] Audit all remaining public customer-facing text and notifications for feminine Arabic phrasing, then re-verify the customer flows.
 - [x] Complete a route-by-route audit of public copy, empty/loading/error states, and customer flows on the live storefront after the language update.
-- [ ] Re-verify the updated Arabic copy on the live Vercel routes for home, product details, product error, checkout, and order tracking.
-- [ ] Verify public checkout empty/error and product loading/not-found states after the language update.
-- [ ] Complete a final live Vercel customer-flow audit from browse through order tracking after the production deployment.
+- [x] Re-verify the updated Arabic copy on the live Vercel routes for home, product details, product error, checkout, and order tracking.
+- [x] Verify public checkout empty/error and product loading/not-found states after the language update.
+- [x] Complete a final live Vercel customer-flow audit from browse through order tracking after the production deployment.
 - [x] Fix the direct invalid product route so its loading state resolves to the public not-found message.
+- [x] Add and verify safe client-side checkout field validation for the public error-state flow without creating an order.
