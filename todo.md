@@ -68,4 +68,4 @@
 - [x] Replace destructive variant recreation in admin product edits with order-safe updates that preserve variants referenced by historical order items.
 - [x] Verify the restored authorized product stock from the public Supabase product page after the admin update.
 - [x] Diagnose the Vercel blank screen and add a production configuration notice that replaces the startup crash.
-- [ ] Add the Supabase Vite variables to Vercel and redeploy the latest GitHub revision.
+- [x] Add the Supabase Vite variables to Vercel, redeploy the latest GitHub revision, and verify the storefront loads six Supabase products in production.
