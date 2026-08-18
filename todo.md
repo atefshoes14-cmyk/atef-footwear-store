@@ -55,10 +55,15 @@
 - [x] Enable the Supabase integration only after user confirmation and connect the correct Supabase project credentials.
 - [x] Define and apply Supabase role, RLS, storage-bucket, inventory-option, product, and order policies.
 - [x] Update the protected admin product and order workflows to use the approved Supabase data and storage integration.
-- [ ] Validate administration security, role access, RLS behavior, and deployment-compatible source handoff.
+- [x] Validate administration security, role access, RLS behavior, and deployment-compatible source handoff.
 - [x] Revalidate the newly added Supabase public key against the project REST endpoint.
 - [x] Evaluate the initially supplied Supabase publishable key, record its REST rejection, and replace it with the newly issued validated key.
 - [x] Normalize the supplied `/rest/v1/` Data API endpoint to the Supabase project root before the final credentials test.
 - [x] Apply and validate the newly issued Supabase publishable key from the user.
-- [ ] Create and promote the first Supabase Auth administrator, then validate the authenticated dashboard and order-management flows end to end.
+- [x] Create and promote the first Supabase Auth administrator, then validate the authenticated dashboard and order-management flows end to end.
 - [x] Preserve existing Supabase Storage gallery images during product edits, with explicit per-image removal controls.
+- [x] Create a controlled storefront COD verification order, review it in `/admin/orders`, and confirm an allowed status transition.
+- [x] Exercise an authenticated Supabase admin product mutation and verify the public catalog reflects the authorized change.
+- [x] Record anonymous RLS write-denial checks for products, orders, and Supabase Storage.
+- [x] Replace destructive variant recreation in admin product edits with order-safe updates that preserve variants referenced by historical order items.
+- [x] Verify the restored authorized product stock from the public Supabase product page after the admin update.

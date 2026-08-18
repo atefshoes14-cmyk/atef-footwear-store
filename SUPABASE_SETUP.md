@@ -43,3 +43,19 @@ where id = 'REPLACE_WITH_AUTH_USER_UUID';
 ## Final deployment check
 
 After activating the administrator, confirm one complete administrator flow: edit a seeded product without removing its existing gallery, change an order status, upload a new product image, and confirm the public storefront remains readable while protected tables reject unauthenticated writes. The product editor preserves every existing gallery image unless the administrator deliberately removes it with the image-level **×** control.
+
+## Verification record
+
+On 18 August 2026, a confirmed Supabase account was promoted to `profiles.role = 'admin'` and tested through the public application. The authenticated account loaded the protected products dashboard with all six seeded products and their twelve variants, and `/admin/orders` loaded the protected empty-state view for the current zero-order database. After clearing the browser session, `/admin/orders` returned to the email/password gate, confirming that protected-route access is session dependent. No password is recorded in this repository.
+
+The subsequent end-to-end validation created a clearly marked cash-on-delivery verification order through the public checkout. It contained one `سنيكرز أبيض يومي`, size `40`, color `أبيض`, for `1,190` EGP. The promoted manager read the customer, item, and total from `/admin/orders`, changed its status from `pending` to `cancelled`, and then restored the temporarily reduced variant quantity from `9` to `10`. The verification order remains cancelled for auditability and is not a fulfilment request.
+
+The product editor was also validated with this historical order attached. Its variant-update logic now preserves existing variant IDs, updates them in place, and refuses removal of a variant referenced by an order item. This protects past order lines and allows administrators to adjust stock or product data safely. Existing gallery rows remain visible and are retained unless explicitly removed.
+
+After the authorized restoration to 10 units for the ordered size-40 variant, the customer-facing product page reloaded from Supabase with the product, both size options (`40` and `42`), its existing image, sale price, and the **in-stock** state intact.
+
+Anonymous REST write checks were denied for `products` and `orders` (HTTP `401`) and the `product-images` Storage object write was denied by a row-level security policy (Storage `AccessDenied`). Public catalog read and public checkout remained available by design.
+
+### Supabase security advisor note
+
+The latest advisor report contains two warnings for the public `place_order` `SECURITY DEFINER` function. This exposure is **intentional** because the store supports guest cash-on-delivery checkout; the function validates cart contents, locks and decrements stock atomically, and uses a fixed search path. Revoking anonymous execution would disable guest checkout. The other remaining warning is that leaked-password protection is disabled in Supabase Auth; enable it in the Supabase Auth password-security settings when convenient. See the relevant [Supabase linter guidance](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable) and [password-protection guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
