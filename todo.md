@@ -48,3 +48,17 @@
 - [x] Upload and reference the supplied Atef banner and official square logo through managed project asset URLs.
 - [x] Replace the public header’s temporary mark with the supplied official logo and banner-led brand treatment.
 - [x] Validate the revised desktop and mobile storefront, then save and push the refined delivery checkpoint.
+
+## Supabase admin and deployment assessment
+
+- [x] Compare the current Manus-managed authentication, database, and storage architecture with the requested Supabase implementation.
+- [x] Enable the Supabase integration only after user confirmation and connect the correct Supabase project credentials.
+- [x] Define and apply Supabase role, RLS, storage-bucket, inventory-option, product, and order policies.
+- [x] Update the protected admin product and order workflows to use the approved Supabase data and storage integration.
+- [ ] Validate administration security, role access, RLS behavior, and deployment-compatible source handoff.
+- [x] Revalidate the newly added Supabase public key against the project REST endpoint.
+- [x] Evaluate the initially supplied Supabase publishable key, record its REST rejection, and replace it with the newly issued validated key.
+- [x] Normalize the supplied `/rest/v1/` Data API endpoint to the Supabase project root before the final credentials test.
+- [x] Apply and validate the newly issued Supabase publishable key from the user.
+- [ ] Create and promote the first Supabase Auth administrator, then validate the authenticated dashboard and order-management flows end to end.
+- [x] Preserve existing Supabase Storage gallery images during product edits, with explicit per-image removal controls.
