@@ -61,6 +61,8 @@ The product editor was also validated with this historical order attached. Its v
 
 After the authorized restoration to 10 units for the ordered size-40 variant, the customer-facing product page reloaded from Supabase with the product, both size options (`40` and `42`), its existing image, sale price, and the **in-stock** state intact.
 
+The public `/orders` page was then tested in the live Vercel deployment using the clearly marked verification-order phone number. It returned the cancelled status, item summary, date, and total while omitting the name, address, and phone from the displayed result.
+
 Anonymous REST write checks were denied for `products` and `orders` (HTTP `401`) and the `product-images` Storage object write was denied by a row-level security policy (Storage `AccessDenied`). Public catalog read and public checkout remained available by design.
 
 ### Supabase security advisor note
