@@ -24,6 +24,10 @@ Configure the following **Vite** variables in the production host before publish
 
 > Do not place a Supabase service-role key in a `VITE_` variable or in the client source code.
 
+### Vercel configuration
+
+For the Vercel project, open **Settings → Environment Variables** and add the three variables above to **Production**, **Preview**, and **Development** as applicable. The browser bundle reads `VITE_` variables **during the Vercel build**, so adding them requires a fresh deployment after saving. In the Vercel dashboard, use **Deployments → Redeploy** on the latest deployment after setting the values. A missing URL or publishable key now shows an Arabic setup screen instead of a blank page.
+
 ## Activate the first store administrator
 
 The interface intentionally rejects every account until the account has an `admin` profile role. This prevents a valid ordinary Supabase user from accessing product, order, or storage administration.
